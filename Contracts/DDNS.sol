@@ -1,6 +1,10 @@
 pragma solidity >=0.4.22 <0.6.0;
 
-contract DDNSService is Destructible {
+import "./includes/Ownable.sol";
+import "./includes/Destructible.sol";
+import "./includes/SafeMath.sol";
+
+contract DDNS is Destructible {
 
     using SafeMath for uint256;
 
@@ -18,12 +22,12 @@ contract DDNSService is Destructible {
         uint expires;
     }
 
-    uint constant public DOMAIN_NAME_COST = 1 ether;
-    uint constant public DOMAIN_NAME_COST_SHORT_ADDITION = 1 ether;
+    uint constant public DN_COST = 1 ether;
+    uint constant public DN_COST_SHORT_ADDITION = 1 ether;
     uint constant public DOMAIN_EXPIRATION_DATE = 365 days;
-    uint8 constant public DOMAIN_NAME_MIN_LENGTH = 5;
-    uint8 constant public DOMAIN_NAME_EXPENSIVE_LENGTH = 8;
-    uint8 constant public TOP_LEVEL_DOMAIN_MIN_LENGTH = 1;
+    uint8 constant public DN_MIN_LENGTH = 5;
+    uint8 constant public DN_EXPENSIVE_LENGTH = 8;
+    uint8 constant public TLD_MIN_LENGTH = 1;
     bytes1 constant public BYTES_DEFAULT_VALUE = bytes1(0x00);
     
     mapping (bytes32 => DomainDetails) public domainNames;
@@ -59,7 +63,7 @@ contract DDNSService is Destructible {
 
     modifier isDomainNameLengthAllowed(bytes memory domain) {
         require(
-            domain.length >= DOMAIN_NAME_MIN_LENGTH,
+            domain.length >= DN_MIN_LENGTH,
             "Domain name is too short."
         );
         _;
@@ -67,7 +71,7 @@ contract DDNSService is Destructible {
 
     modifier isTopLevelLengthAllowed(bytes12 topLevel) {
         require(
-            topLevel.length >= TOP_LEVEL_DOMAIN_MIN_LENGTH,
+            topLevel.length >= TLD_MIN_LENGTH,
             "The provided TLD is too short."
         );
         _;
@@ -144,7 +148,7 @@ contract DDNSService is Destructible {
 
         Receipt memory newReceipt = Receipt(
             {
-                amountPaidWei: DOMAIN_NAME_COST,
+                amountPaidWei: DN_COST,
                 timestamp: block.timestamp,
                 expires: block.timestamp + DOMAIN_EXPIRATION_DATE
             }
@@ -159,7 +163,7 @@ contract DDNSService is Destructible {
         emit LogReceipt(
             block.timestamp, 
             domain, 
-            DOMAIN_NAME_COST, 
+            DN_COST, 
             block.timestamp + DOMAIN_EXPIRATION_DATE
         );
 
@@ -186,7 +190,7 @@ contract DDNSService is Destructible {
 
         Receipt memory newReceipt = Receipt(
             {
-                amountPaidWei: DOMAIN_NAME_COST,
+                amountPaidWei: DN_COST,
                 timestamp: block.timestamp,
                 expires: block.timestamp + DOMAIN_EXPIRATION_DATE
             }
@@ -208,7 +212,7 @@ contract DDNSService is Destructible {
         emit LogReceipt(
             block.timestamp, 
             domain, 
-            DOMAIN_NAME_COST, 
+            DN_COST, 
             block.timestamp + DOMAIN_EXPIRATION_DATE
         );
     }
@@ -268,10 +272,10 @@ contract DDNSService is Destructible {
         pure
         returns (uint) 
     {
-        if (domain.length < DOMAIN_NAME_EXPENSIVE_LENGTH) {
-            return DOMAIN_NAME_COST + DOMAIN_NAME_COST_SHORT_ADDITION;
+        if (domain.length < DN_EXPENSIVE_LENGTH) {
+            return DN_COST + DN_COST_SHORT_ADDITION;
         }
-        return DOMAIN_NAME_COST;
+        return DN_COST;
     }
 
     function getReceiptList() public view returns (bytes32[] memory) {
