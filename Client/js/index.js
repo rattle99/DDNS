@@ -1,6 +1,7 @@
 function structFactory(names) {
     var names = names.split(' ');
     var count = names.length;
+
     function constructor() {
         for (var i = 0; i < count; i++) {
             this[names[i]] = arguments[i];
@@ -9,29 +10,30 @@ function structFactory(names) {
     return constructor;
 }
 
-function string2hex(tmp) { var str = '';
-    for(var i = 0; i < tmp.length; i++) {
+function string2hex(tmp) {
+    var str = '';
+    for (var i = 0; i < tmp.length; i++) {
         str += tmp[i].charCodeAt(0).toString(16);
     }
     return str;
 }
 
-function hex2string(str1){
-	var hex  = str1.toString();
-	var str = '';
-	for (var n = 0; n < hex.length; n += 2) {
-		str += String.fromCharCode(parseInt(hex.substr(n, 2), 16));
-	}
-	return str;
+function hex2string(str1) {
+    var hex = str1.toString();
+    var str = '';
+    for (var n = 0; n < hex.length; n += 2) {
+        str += String.fromCharCode(parseInt(hex.substr(n, 2), 16));
+    }
+    return str;
 }
 
 window.addEventListener('load', async () => {
     if (window.ethereum) {
         window.web3 = new Web3(ethereum);
         try {
-                await ethereum.enable();
+            await ethereum.enable();
         } catch (error) {
-                console.log(error);
+            console.log(error);
         }
     } else if (window.web3) {
         window.web3 = new Web3(web3.currentProvider);
@@ -45,140 +47,225 @@ var DDNSContract = web3.eth.contract([{"constant":false,"inputs":[{"name":"domai
 var DDNS = DDNSContract.at('0xbb56f7377956b32b5c61debb58552fb0ebd0ecca');
 
 var DomainNameRegistered = DDNS.LogDomainNameRegistered();
-DomainNameRegistered.watch(function(error, result){
-    if (!error)
-        {
-            console.log(result);
-        } else {
-            console.log(error);
-        }
+DomainNameRegistered.watch(function(error, result) {
+    if (!error) {
+        console.log(result);
+    } else {
+        console.log(error);
+    }
 });
 
 var DomainNameRenewed = DDNS.LogDomainNameRenewed();
-DomainNameRenewed.watch(function(error, result){
-    if (!error)
-        {
-            console.log(result);
-        } else {
-            console.log(error);
-        }
+DomainNameRenewed.watch(function(error, result) {
+    if (!error) {
+        console.log(result);
+    } else {
+        console.log(error);
+    }
 });
 
 var DomainNameEdited = DDNS.LogDomainNameEdited();
-DomainNameEdited.watch(function(error, result){
-    if (!error)
-        {
-            console.log(result);
-        } else {
-            console.log(error);
-        }
+DomainNameEdited.watch(function(error, result) {
+    if (!error) {
+        console.log(result);
+    } else {
+        console.log(error);
+    }
 });
 
 var DomainNameTransferred = DDNS.LogDomainNameTransferred();
-DomainNameTransferred.watch(function(error, result){
-    if (!error)
-        {
-            console.log(result);
-        } else {
-            console.log(error);
-        }
+DomainNameTransferred.watch(function(error, result) {
+    if (!error) {
+        console.log(result);
+    } else {
+        console.log(error);
+    }
 });
 
 var PurchaseChangeReturned = DDNS.LogPurchaseChangeReturned();
-PurchaseChangeReturned.watch(function(error, result){
-    if (!error)
-        {
-            console.log(result);
-        } else {
-            console.log(error);
-        }
+PurchaseChangeReturned.watch(function(error, result) {
+    if (!error) {
+        console.log(result);
+    } else {
+        console.log(error);
+    }
 });
 
 var LogReceipt = DDNS.LogReceipt();
-LogReceipt.watch(function(error, result){
-    if (!error)
-        {
-            console.log(result);
-        } else {
-            console.log(error);
-        }
+LogReceipt.watch(function(error, result) {
+    if (!error) {
+        console.log(result);
+    } else {
+        console.log(error);
+    }
 });
 
-function registerDomain(){
-    VehicleRegistry.unregisterVehicle(vin,function(error, result) {
-        if (!error) {
-                console.log(result);
-        } else
-                console.log(error);
-    });
-};
+$("#formRegisterDomainSubmit").click(function() {
+    var dn = $("#formRegisterDomainName").val();
+    var tld = $("#formRegisterTLD").val();
+    var ip = $("#formRegisterIP").val();
 
-$("#formRegisterDomainSubmit").click(function(){
-    
-    registerDomain();
+    dn = string2hex(dn);
+    tld = string2hex(tld);
+    ip = string2hex(ip);
+
+    registerDomain(dn, tld, ip);
 });
 
-$("#formChangeIPSubmit").click(function(){
-    changeIP();
+$("#formChangeIPSubmit").click(function() {
+    var dn = $("#formChangeIPDomainName").val();
+    var tld = $("#formChangeIPTLD").val();
+    var ip = $("#formChangeIPIP").val();
+
+    dn = string2hex(dn);
+    tld = string2hex(tld);
+    ip = string2hex(ip);
+
+    changeIP(dn, tld, ip);
 });
 
-$("#formRenewSubmit").click(function(){
-    renewDomain();
+$("#formRenewSubmit").click(function() {
+    var dn = $("#formRenewDomainName").val();
+    var tld = $("#formRenewTLD").val();
+
+    dn = string2hex(dn);
+    tld = string2hex(tld);
+
+    renewDomain(dn, tld);
 });
 
-$("#formTransferSubmit").click(function(){
-    transferDomain();
+$("#formTransferSubmit").click(function() {
+    var dn = $("#formTransferDomainName").val();
+    var tld = $("#formTransferTLD").val();
+    var add = $("#formTransferNewOwner").val();
+
+    dn = string2hex(dn);
+    tld = string2hex(tld);
+
+    transferDomain(dn, tld, add);
 });
 
-$("#formGettersGetPrice").click(function(){
-    getPrice();
+$("#formGettersGetPrice").click(function() {
+    var dn = $("#formGettersDomainName").val();
+    var tld = $("#formGettersTLD").val();
+
+    dn = string2hex(dn);
+    tld = string2hex(tld);
+
+    getPrice(dn);
 });
 
-$("#formGettersGetIP").click(function(){
-    getIP();
+$("#formGettersGetIP").click(function() {
+    var dn = $("#formGettersDomainName").val();
+    var tld = $("#formGettersTLD").val();
+
+    dn = string2hex(dn);
+    tld = string2hex(tld);
+
+    getIP(dn, tld);
 });
 
-$("#formGettersGetDomainHash").click(function(){
-    getDomainHash();
+$("#formGettersGetDomainHash").click(function() {
+    var dn = $("#formGettersDomainName").val();
+    var tld = $("#formGettersTLD").val();
+
+    dn = string2hex(dn);
+    tld = string2hex(tld);
+
+    getDomainHash(dn, tld);
 });
 
-$("#formGettersGetReceiptList").click(function(){
+$("#formGettersGetReceiptList").click(function() {
     getReceiptList();
 });
 
-$("#formGettersGetReceiptKey").click(function(){
-    getReceiptKey();
+$("#formGettersGetReceiptKey").click(function() {
+    var dn = $("#formGettersDomainName").val();
+    var tld = $("#formGettersTLD").val();
+
+    dn = string2hex(dn);
+    tld = string2hex(tld);
+
+    getReceiptKey(dn, tld);
 });
 
-function changeIP(){
-
+function registerDomain(_dn, _tld, _ip) {
+    DDNS.unregisterVehicle(_dn, _tld, _ip, function(error, result) {
+        if (!error) {
+            console.log(result);
+        } else
+            console.log(error);
+    });
 };
 
-function renewDomain(){
-
+function changeIP(_dn, _tld, _ip) {
+    DDNS.edit(_dn, _tld, _ip, function(error, result) {
+        if (!error) {
+            console.log(result);
+        } else
+            console.log(error);
+    });
 };
 
-function transferDomain(){
-
+function renewDomain(_dn, _tld) {
+    DDNS.renewDomainName(_dn, _tld, function(error, result) {
+        if (!error) {
+            console.log(result);
+        } else
+            console.log(error);
+    });
 };
 
-function getPrice(){
-
+function transferDomain(_dn, _tld, _add) {
+    DDNS.transferDomain(_dn, _tld, _add, function(error, result) {
+        if (!error) {
+            console.log(result);
+        } else
+            console.log(error);
+    });
 };
 
-function getIP(){
-
+function getPrice(_dn) {
+    DDNS.getPrice(_dn, function(error, result) {
+        if (!error) {
+            console.log(result);
+        } else
+            console.log(error);
+    });
 };
 
-function getDomainHash(){
-
+function getIP(_dn, _ip) {
+    DDNS.getIP(_dn, _ip, function(error, result) {
+        if (!error) {
+            console.log(result);
+        } else
+            console.log(error);
+    });
 };
 
-function getReceiptList(){
-
+function getDomainHash(_dn, _ip) {
+    DDNS.getDomainHash(_dn, _ip, function(error, result) {
+        if (!error) {
+            console.log(result);
+        } else
+            console.log(error);
+    });
 };
 
-function getReceiptKey(){
-
+function getReceiptList() {
+    DDNS.getReceiptList(function(error, result) {
+        if (!error) {
+            console.log(result);
+        } else
+            console.log(error);
+    });
 };
 
+function getReceiptKey(_dn, _ip) {
+    DDNS.getReceiptKey(_dn, _ip, function(error, result) {
+        if (!error) {
+            console.log(result);
+        } else
+            console.log(error);
+    });
+};
