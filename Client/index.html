@@ -49,8 +49,23 @@
             <input type="submit" id="formTransferSubmit"/>
         </form>
         <hr>
-        
-        <p id="result"></p>
+
+        <h1>Getters</h1>
+        <form action="" method="" id="formGetters">
+            Domain :
+            <input pattern=".{5,}"   required title="3 characters minimum" type="text" name="formGettersDomainName" id="formGettersDomainName" value="anudit">
+            .
+            <input pattern=".{1,15}"   required title="1-15 characters" type="text" name="formGettersTLD" id="formGettersTLD" value="com">
+            <br /><br />
+            <button id="formGettersGetPrice">getPrice</button>
+            <button id="formGettersGetIP">getIP</button>
+            <button id="formGettersGetDomainHash">getDomainHash</button>
+            <button id="formGettersGetReceiptList">getReceiptList</button>
+            <button id="formGettersGetReceiptKey">getReceiptKey</button>
+            <p id="formGettersResult"></p>
+        </form>
+        <hr>
+
     </body>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <script src="./js/main.js" charset="utf-8"></script>
