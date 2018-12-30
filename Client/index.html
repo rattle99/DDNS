@@ -1,0 +1,57 @@
+<html>
+    <body>
+        <h1>Register Domain:</h1>
+        <form action="" method="" id="formRegisterDomain">
+            Domain :
+            <input pattern=".{5,}"   required title="3 characters minimum" type="text" name="formRegisterDomainName" id="formRegisterDomainName" value="anudit">
+            .
+            <input pattern=".{1,15}"   required title="1-15 characters" type="text" name="formRegisterTLD" id="formRegisterTLD" value="com">
+            <br />IP :
+            <input type="text" name="formRegisterIP" id="formRegisterIP" value="127.0.0.1">
+            <br />
+            <input type="submit" id="formRegisterDomainSubmit"/>
+        </form>
+        <hr>
+
+        <h1>Change IP:</h1>
+        <form action="" method="" id="formChangeIP">
+            Domain :
+            <input pattern=".{5,}"   required title="3 characters minimum" type="text" name="formChangeIPDomainName" id="formChangeIPDomainName" value="anudit">
+            .
+            <input pattern=".{1,15}"   required title="1-15 characters" type="text" name="formChangeIPTLD" id="formRegisterTLD" value="com">
+            <br />IP :
+            <input type="text" name="formChangeIPIP" id="formChangeIPIP" value="127.0.0.1">
+            <br />
+            <input type="submit" id="formChangeIPSubmit"/>
+        </form>
+        <hr>
+
+        <h1>Renew Domain:</h1>
+        <form action="" method="" id="formRenew">
+            Domain :
+            <input pattern=".{5,}"   required title="3 characters minimum" type="text" name="formRenewDomainName" id="formRenewDomainName" value="anudit">
+            .
+            <input pattern=".{1,15}"   required title="1-15 characters" type="text" name="formRenewTLD" id="formRenewTLD" value="com">
+            <br />
+            <input type="submit" id="formRenewSubmit"/>
+        </form>
+        <hr>
+        
+        <h1>Transfer Ownership:</h1>
+        <form action="" method="" id="formTransfer">
+            Domain :
+            <input pattern=".{5,}"   required title="3 characters minimum" type="text" name="formTransferDomainName" id="formTransferDomainName" value="anudit">
+            .
+            <input pattern=".{1,15}"   required title="1-15 characters" type="text" name="formTransferTLD" id="formTransferTLD" value="com">
+            <br />New Owner : 
+            <input type="text" name="formTransferNewOwner" id="formTransferNewOwner" value="0x707aC3937A9B31C225D8C240F5917Be97cab9F20">
+            <br />
+            <input type="submit" id="formTransferSubmit"/>
+        </form>
+        <hr>
+        
+        <p id="result"></p>
+    </body>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="./js/main.js" charset="utf-8"></script>
+</html>
