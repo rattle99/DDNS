@@ -1,10 +1,9 @@
 pragma solidity >=0.4.22 <0.6.0;
 
-import "./includes/Ownable.sol";
-import "./includes/Destructible.sol";
-import "./includes/SafeMath.sol";
+import "./Ownable.sol";
+import "./SafeMath.sol";
 
-contract DDNS is Destructible {
+contract DDNS is Ownable {
 
     using SafeMath for uint256;
 
@@ -112,6 +111,7 @@ contract DDNS is Destructible {
     );
 
     event LogReceipt(
+        bytes32 receiptKey,
         uint indexed timestamp, 
         bytes domainName, 
         uint amountInWei, 
@@ -127,10 +127,7 @@ contract DDNS is Destructible {
     ) 
         public
         payable 
-        isDomainNameLengthAllowed(domain) 
-        isTopLevelLengthAllowed(topLevel) 
-        isAvailable(domain, topLevel) 
-        collectDomainNamePayment(domain) 
+
     {
         bytes32 domainHash = getDomainHash(domain, topLevel);
 
@@ -161,6 +158,7 @@ contract DDNS is Destructible {
         receiptDetails[receiptKey] = newReceipt;
 
         emit LogReceipt(
+            receiptKey,
             block.timestamp, 
             domain, 
             DN_COST, 
@@ -210,6 +208,7 @@ contract DDNS is Destructible {
         );
 
         emit LogReceipt(
+            receiptKey,
             block.timestamp, 
             domain, 
             DN_COST, 
