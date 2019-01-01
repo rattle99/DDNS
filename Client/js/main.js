@@ -191,7 +191,7 @@ $("#formGettersGetReceiptKey").click(function() {
 });
 
 function registerDomain(_dn, _tld, _ip) {
-    DDNS.unregisterVehicle(_dn, _tld, _ip, function(error, result) {
+    DDNS.register(_dn, _tld, _ip, function(error, result) {
         if (!error) {
             console.log(result);
         } else
